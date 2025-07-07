@@ -1,0 +1,8 @@
+
+export const FIRE_STORE_COLLECTION = {
+  PRODUCTS: "PRODUCTS",
+  CATEGORIES: "CATEGORIES",
+  TYPES: "TYPES",
+};
+
+export const DEFAULT_SORT_FIELD = 'updatedAt'

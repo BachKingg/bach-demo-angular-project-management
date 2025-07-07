@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { PageLayoutComponent } from '@components';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.scss'
+  imports: [
+    RouterOutlet,
+    PageLayoutComponent
+  ],
+  templateUrl: './app.component.html',
 })
-export class App {
+export class AppComponent {
   protected title = 'bach-demo-project-management';
 }

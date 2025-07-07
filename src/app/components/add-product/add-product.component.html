@@ -1,0 +1,79 @@
+<h2 mat-dialog-title>Add Product</h2>
+<mat-dialog-content class="relative ">
+  <form class="main-ap-form" [formGroup]="productForm" [ngClass]="{'main-disabled': isView || !isReadyFormData() || loading.submit()}">
+    <!-- region name -->
+    <ng-container *ngIf="productForm.contains('name')">
+      <mat-form-field class="main-ap-fi">
+        <mat-label>Product Name</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+    </ng-container>
+
+    <!-- region category -->
+    <ng-container *ngIf="productForm.contains('category')">
+      <mat-form-field class="main-ap-fi">
+        <mat-label>Product Category</mat-label>
+        <mat-select formControlName="category" (ngModelChange)="onChangeCategory($event)">
+          <ng-container *ngFor="let category of categories">
+            <mat-option [value]="category.code">{{category.label}}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+
+    <!-- region type -->
+    <ng-container *ngIf="productForm.contains('type')">
+      <mat-form-field class="main-ap-fi" [ngClass]="{'main-disabled': !productForm.controls['category'].value}">
+        <mat-label>Product Type</mat-label>
+        <mat-select formControlName="type">
+          <ng-container *ngFor="let type of typesForSelect">
+            <mat-option [value]="type.code">{{type.label}}</mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+    </ng-container>
+
+    <!-- region price -->
+    <ng-container *ngIf="productForm.contains('price')">
+      <mat-form-field class="main-ap-fi">
+        <mat-label>Product Price (VND)</mat-label>
+        <input class="main-input-currency" matInput formControlName="price" app-currency-format />
+      </mat-form-field>
+    </ng-container>
+
+    <!-- region detail -->
+    <ng-container *ngIf="productForm.contains('detail')">
+      <mat-form-field class="main-ap-fi">
+        <mat-label>Product Detail</mat-label>
+        <textarea matInput formControlName="detail"></textarea>
+      </mat-form-field>
+    </ng-container>
+
+    <!-- region img -->
+    <ng-container *ngIf="productForm.contains('img')">
+      <mat-form-field class="main-ap-fi">
+        <mat-label>Product Image</mat-label>
+        <input matInput formControlName="img" />
+      </mat-form-field>
+      <ng-container *ngIf="productForm.controls['img'].value">
+        <div class="w-[100%] flex justify-center items-center">
+          <img class="w-[100%] !max-w-[400px]" [src]="productForm.controls['img'].value" alt="img">
+        </div>
+      </ng-container>
+    </ng-container>
+  </form>
+
+  <ng-container *ngIf="!isReadyFormData() || loading.submit()">
+    <div class="main-tl-ld">
+      <div class="main-tl-bgld">
+      </div>
+      <mat-progress-bar mode="query"></mat-progress-bar>
+    </div>
+  </ng-container>
+</mat-dialog-content>
+<mat-dialog-actions [align]="'end'">
+  <button mat-button (click)="onCloseDialog()">Cancel</button>
+  <ng-container *ngIf="!isView">
+    <button [disabled]="productForm.invalid" mat-button cdkFocusInitial (click)="submit()">Ok</button>
+  </ng-container>
+</mat-dialog-actions>

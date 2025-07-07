@@ -1,0 +1,40 @@
+&-tl {
+  &-ft {
+    @apply flex justify-between gap-[10px] p-[10px]
+  }
+
+  &-ftr {
+    @apply flex min-w-[300px] basis-[10%] justify-end items-end
+  }
+
+  &-ftl {
+    @apply flex flex-wrap gap-[10px] basis-[90%]
+  }
+
+  &-fo {
+    padding: 0 8px;
+    @apply flex justify-between sticky bottom-[8px] w-[100%] bg-[var(--white-color)] pt-[10px]
+  }
+
+  &-brfo {
+    @apply flex justify-center items-center
+  }
+
+  &-tb {
+    @apply overflow-auto min-h-[50%] relative
+  }
+
+  &-ld {
+    .mat-mdc-progress-bar {
+      transform: translate(-50%, 0) scaleX(-1) !important;
+    }
+
+    @apply absolute top-0 left-0 h-[100%] w-[100%] z-[inherit] flex justify-center items-center
+  }
+
+  &-bgld {
+    @apply h-[100%] w-[100%] bg-[var(--white-color)] opacity-35
+  }
+
+  @apply h-[100%] relative
+}
