@@ -16,7 +16,7 @@
 
     <div class="main-pl-fi">
       <label class="main-label text-sm">Product Category</label>
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" *ngIf="categories.length">
         <mat-select [(ngModel)]="params.category" (ngModelChange)="onChangeCategory($event)"
           placeholder="Select Category">
           <ng-container *ngFor="let category of categories">
@@ -53,7 +53,7 @@
 
   <!-- #region table -->
   <ng-container table>
-    <table mat-table [dataSource]="productData" mat-virtual-scroll>
+    <table *ngIf="productData" mat-table [dataSource]="productData" mat-virtual-scroll>
 
       <ng-container *ngFor="let header of tableHeaders;let index = index;">
         <ng-container [matColumnDef]="header.field">

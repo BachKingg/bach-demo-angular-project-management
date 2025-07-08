@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -177,6 +177,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     private dialogService: MatDialog,
     private firebaseService: FirebaseService,
     private router: Router,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   //#region life circle
@@ -200,29 +201,53 @@ export class ProductsComponent implements OnInit, OnDestroy {
     };
     this.firebaseService
       .searchDocumentWithField<IProduct>(FIRE_STORE_COLLECTION.PRODUCTS, _payload)
-      .subscribe((resp) => {
-        const data = resp.data;
-        this.productData = data.map((prod) => {
-          return {
-            ...prod,
-            select: false,
-          };
-        });
-        this.checkProductSelected();
-        this.checkAllSelect();
-        this.checkDisableDelete();
-        this.params.totalElements = resp.totalElements;
-        this.changeUrl(false);
-        this.loading.getProducts.set(false);
-        this.disable.action.set(!this.productData.length);
-      });
+      .subscribe(
+        (resp) => {
+          const data = resp.data;
+          this.productData = data.map((prod) => {
+            return {
+              ...prod,
+              select: false,
+            };
+          });
+          this.checkProductSelected();
+          this.checkAllSelect();
+          this.checkDisableDelete();
+          this.params.totalElements = resp.totalElements;
+          this.changeUrl(false);
+        },
+        (error: any) => {
+          console.error('Error fetching products:', error);
+          this.productData = [];
+          this.params.totalElements = 0;
+          this.disable.action.set(true);
+        },
+        () => {
+          this.disable.action.set(!this.productData.length);
+          this.cdr.detectChanges();
+          this.loading.getProducts.set(false);
+        }
+      );
   }
 
   getProductCategory() {
-    this.firebaseService.getCollection<ICategory>(FIRE_STORE_COLLECTION.CATEGORIES, false).subscribe(resp => {
-      this.categories = resp;
-      this.loading.getCategory.set(true);
-    });
+    this.firebaseService.getCollection<ICategory>(FIRE_STORE_COLLECTION.CATEGORIES, false)
+      .subscribe(
+        (resp: any) => {
+          if (resp && resp.length) {
+            this.categories = resp;
+          }
+        },
+        (error: any) => {
+          console.error('Error fetching categories:', error);
+          this.categories = [];
+          this.disable.action.set(true);
+        },
+        () => {
+          this.loading.getCategory.set(true);
+          this.cdr.detectChanges();
+        }
+      );
   }
 
   getProductType() {
