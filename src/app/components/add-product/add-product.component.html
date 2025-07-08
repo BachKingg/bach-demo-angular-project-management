@@ -1,6 +1,7 @@
 <h2 mat-dialog-title>Add Product</h2>
 <mat-dialog-content class="relative ">
-  <form class="main-ap-form" [formGroup]="productForm" [ngClass]="{'main-disabled': isView || !isReadyFormData() || loading.submit()}">
+  <form class="main-ap-form" [formGroup]="productForm"
+    [ngClass]="{'main-disabled': isView || !isReadyFormData() || loading.submit()}">
     <!-- region name -->
     <ng-container *ngIf="productForm.contains('name')">
       <mat-form-field class="main-ap-fi">

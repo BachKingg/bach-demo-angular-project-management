@@ -425,7 +425,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.addProductDialogRef = this.dialogService.open(AddProductComponent, {
       data: {
         product: product,
-        categorys: this.categories,
+        categories: this.categories,
         types: this.types,
         isView: action === 'VIEW',
       },

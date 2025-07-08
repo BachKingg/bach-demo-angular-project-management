@@ -82,8 +82,8 @@ export class AddProductComponent implements OnInit {
   }
 
   initData() {
-    if (this.data?.categorys) {
-      this.categories = this.data.categorys;
+    if (this.data?.categories) {
+      this.categories = this.data.categories;
     }
     if (this.data?.types) {
       this.types = this.data.types;
