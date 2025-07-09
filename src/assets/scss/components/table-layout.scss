@@ -1,10 +1,10 @@
-&-tl {
+&-table-layout {
   &-ft {
-    @apply flex justify-between gap-[10px] p-[10px]
+    @apply flex justify-between gap-[10px] p-[16px]
   }
 
   &-ftr {
-    @apply flex min-w-[300px] basis-[10%] justify-end items-end
+    @apply flex min-w-[300px] basis-[10%] justify-end items-start
   }
 
   &-ftl {
@@ -25,7 +25,8 @@
   }
 
   &-ld {
-    .mat-mdc-progress-bar {
+    .mat-mdc-progress-spinner {
+      position: absolute !important;
       transform: translate(-50%, 0) scaleX(-1) !important;
     }
 
@@ -33,7 +34,7 @@
   }
 
   &-bgld {
-    @apply h-[100%] w-[100%] bg-[var(--white-color)] opacity-35
+    @apply h-[100%] w-[100%] bg-[var(--purple-color)] opacity-15
   }
 
   @apply h-[100%] relative

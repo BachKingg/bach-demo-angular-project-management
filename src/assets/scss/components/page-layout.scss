@@ -1,15 +1,7 @@
-&-pl {
-
-  &-sb {
-    background-color: $whiteColor !important;
-    border: unset !important;
-    border-radius: 8px !important;
-    width: $sideBarWidth !important;
-    @apply h-[100%]
-  }
+&-page-layout {
 
   &-ct {
-    @apply bg-[var(--white-color)] rounded-[8px] h-[100%]
+    @apply bg-[var(--white-color)] h-[100%]
   }
 
   &-hidden {
@@ -20,5 +12,5 @@
     height: 100% !important;
   }
 
-  @apply p-2 h-[calc(100vh-var(--header-height))]
+  @apply h-[calc(100vh-var(--header-height))]
 }

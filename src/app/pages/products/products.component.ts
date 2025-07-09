@@ -71,7 +71,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
   };
   params: ProductModel = new ProductModel(null);
 
-  pageSizeOption: Array<number> = [10, 20, 30, 50, 100];
   productData: Array<IProductFromFirebase> = [];
   productSelected: Array<IProductFromFirebase> = [];
   categories: Array<ICategory> = [];
@@ -104,7 +103,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     },
     {
       field: 'type',
-      title: 'Product Type',
+      title: 'Type',
       width: '140',
       showSort: false,
       sortOrder: null,
@@ -125,7 +124,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     },
     {
       field: 'img',
-      title: 'Product Image',
+      title: 'Image',
       width: '170',
       showSort: false,
       sortOrder: null,
@@ -185,7 +184,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.parseParams();
     this.initData();
 
-    this.listenChangeProductNameFilter$.pipe(debounceTime(300)).subscribe(resp => {
+    this.listenChangeProductNameFilter$.pipe(debounceTime(500)).subscribe(resp => {
       this.onChangeFilter();
     });
   }
@@ -196,70 +195,82 @@ export class ProductsComponent implements OnInit, OnDestroy {
   //#region firebase
   getProducts() {
     this.loading.getProducts.set(true);
-    const _payload = {
-      ...this.params.getAPIParams,
-    };
+    const _payload = { ...this.params.getAPIParams, };
+
     this.firebaseService
       .searchDocumentWithField<IProduct>(FIRE_STORE_COLLECTION.PRODUCTS, _payload)
-      .subscribe(
-        (resp) => {
-          const data = resp.data;
+      .subscribe({
+        next: ({ data, totalElements }) => {
           this.productData = data.map((prod) => {
             return {
               ...prod,
               select: false,
             };
           });
+          this.params.totalElements = totalElements;
+
           this.checkProductSelected();
           this.checkAllSelect();
           this.checkDisableDelete();
-          this.params.totalElements = resp.totalElements;
           this.changeUrl(false);
         },
-        (error: any) => {
+        error: (error: any) => {
           console.error('Error fetching products:', error);
+
           this.productData = [];
           this.params.totalElements = 0;
           this.disable.action.set(true);
         },
-        () => {
+        complete: () => {
           this.disable.action.set(!this.productData.length);
           this.cdr.detectChanges();
           this.loading.getProducts.set(false);
         }
-      );
+      });
   }
 
-  getProductCategory() {
-    this.firebaseService.getCollection<ICategory>(FIRE_STORE_COLLECTION.CATEGORIES, false)
-      .subscribe(
-        (resp: any) => {
-          if (resp && resp.length) {
-            this.categories = resp;
-          }
+  getProductCategory(): void {
+    this.firebaseService
+      .getCollection<ICategory>(FIRE_STORE_COLLECTION.CATEGORIES, false)
+      .subscribe({
+        next: (categories) => {
+          this.categories = categories?.length ? categories : [];
         },
-        (error: any) => {
+        error: (error) => {
           console.error('Error fetching categories:', error);
           this.categories = [];
           this.disable.action.set(true);
         },
-        () => {
+        complete: () => {
           this.loading.getCategory.set(true);
           this.cdr.detectChanges();
         }
-      );
+      });
   }
 
-  getProductType() {
-    this.firebaseService.getCollection<IType>(FIRE_STORE_COLLECTION.TYPES, false).subscribe(resp => {
-      this.rawTypes = resp;
-      this.types = this.cookingTypeByCategory(resp);
+  getProductType(): void {
+    this.firebaseService
+      .getCollection<IType>(FIRE_STORE_COLLECTION.TYPES, false)
+      .subscribe({
+        next: (types) => {
+          this.rawTypes = types;
+          this.types = this.cookingTypeByCategory(types);
 
-      if (this.params.category) {
-        this.onChangeCategory(this.params.category as any);
-      }
-      this.loading.getType.set(true);
-    });
+          if (this.params.category) {
+            this.onChangeCategory(this.params.category as any);
+          }
+        },
+        error: (error) => {
+          console.error('Error fetching product types:', error);
+          this.rawTypes = [];
+          this.types = [];
+          this.disable.action.set(true);
+        },
+        complete: () => {
+          this.loading.getType.set(true);
+          this.cdr.detectChanges();
+        }
+      });
   }
 
   createNewProduct(data: IProduct) {

@@ -1,11 +1,11 @@
-
 <h2 mat-dialog-title>Are you sure to delete all this product?</h2>
 <mat-dialog-content>
   <table mat-table [dataSource]="products">
 
     <ng-container *ngFor="let header of tableHeaders">
       <ng-container [matColumnDef]="header.field">
-        <th mat-header-cell *matHeaderCellDef [style]="'--mat-mdc-header-cell:' + (header?.width ? (header.width + 'px;') : 'auto;')">
+        <th mat-header-cell *matHeaderCellDef
+          [style]="'--mat-mdc-header-cell:' + (header?.width ? (header.width + 'px;') : 'auto;')">
           {{header.title}}
         </th>
 
@@ -34,10 +34,9 @@
   </table>
 
   <ng-container *ngIf="loading.submit()">
-    <div class="main-tl-ld">
-      <div class="main-tl-bgld">
-      </div>
-      <mat-progress-bar mode="query"></mat-progress-bar>
+    <div class="main-table-layout-ld">
+      <div class="main-table-layout-bgld"></div>
+      <mat-spinner></mat-spinner>
     </div>
   </ng-container>
 </mat-dialog-content>

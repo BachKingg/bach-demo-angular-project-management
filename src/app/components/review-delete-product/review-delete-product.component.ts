@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { IProductFromFirebase, ITableElement, PRODUCT_FIELD } from '@interfaces';
 import { DateTimePipe } from '@pipes';
@@ -24,7 +24,7 @@ import { DateTimePipe } from '@pipes';
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
-    MatProgressBarModule,
+    MatProgressSpinnerModule
   ]
 })
 export class ReviewDeleteProductComponent implements OnInit {
@@ -47,7 +47,7 @@ export class ReviewDeleteProductComponent implements OnInit {
     },
     {
       field: 'type',
-      title: 'Product Type',
+      title: 'Type',
       width: '120',
     },
     {
@@ -62,7 +62,7 @@ export class ReviewDeleteProductComponent implements OnInit {
     },
     {
       field: 'img',
-      title: 'Product Image',
+      title: 'Image',
       width: '150',
     },
     {

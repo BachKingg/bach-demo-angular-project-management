@@ -38,7 +38,7 @@
     <ng-container *ngIf="productForm.contains('price')">
       <mat-form-field class="main-ap-fi">
         <mat-label>Product Price (VND)</mat-label>
-        <input class="main-input-currency" matInput formControlName="price" app-currency-format />
+        <input class="main-input-currency" matInput formControlName="price" />
       </mat-form-field>
     </ng-container>
 
@@ -65,10 +65,9 @@
   </form>
 
   <ng-container *ngIf="!isReadyFormData() || loading.submit()">
-    <div class="main-tl-ld">
-      <div class="main-tl-bgld">
-      </div>
-      <mat-progress-bar mode="query"></mat-progress-bar>
+    <div class="main-table-layout-ld">
+      <div class="main-table-layout-bgld"></div>
+      <mat-spinner></mat-spinner>
     </div>
   </ng-container>
 </mat-dialog-content>

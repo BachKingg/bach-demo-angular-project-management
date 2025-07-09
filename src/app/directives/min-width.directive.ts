@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
 
 @Directive({
   standalone: true,
@@ -10,9 +10,16 @@ export class MinWidthDirective {
     alias: 'app-min-width'
   }) minWidth?: string | number | null;
 
-  constructor(private el: ElementRef) { }
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2
+  ) { }
 
   ngOnInit() {
-    this.el.nativeElement.style = `min-width: ${this.minWidth === null ? 'unset' : (this.minWidth + 'px')};`;
+    this.renderer.setStyle(
+      this.el.nativeElement,
+      'min-width',
+      this.minWidth === null ? 'unset' : `${this.minWidth}px`
+    );
   }
 }

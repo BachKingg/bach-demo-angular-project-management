@@ -2,9 +2,9 @@
   (refresh)="onRefresh()">
   <!-- #region filter -->
   <ng-container filter>
-    <div class="main-pl-fi">
-      <label class="main-label text-sm">Search Product Name</label>
-      <mat-form-field appearance="outline">
+    <div class="main-page-layout-fi">
+      <label class="main-label text-sm">Product Name</label>
+      <mat-form-field>
         <input matInput [(ngModel)]="params.name" placeholder="Enter Product Name"
           (ngModelChange)="onChangeProductName($event)" />
         <button mat-icon-button matSuffix matTooltip="Clear" matTooltipPosition="above"
@@ -14,9 +14,9 @@
       </mat-form-field>
     </div>
 
-    <div class="main-pl-fi">
-      <label class="main-label text-sm">Product Category</label>
-      <mat-form-field appearance="outline" *ngIf="categories.length">
+    <div class="main-page-layout-fi">
+      <label class="main-label text-sm">Category</label>
+      <mat-form-field *ngIf="categories.length">
         <mat-select [(ngModel)]="params.category" (ngModelChange)="onChangeCategory($event)"
           placeholder="Select Category">
           <ng-container *ngFor="let category of categories">
@@ -30,9 +30,9 @@
       </mat-form-field>
     </div>
 
-    <div class="main-pl-fi" [ngClass]="{'main-disabled': !params.category}">
-      <label class="main-label text-sm">Product Type</label>
-      <mat-form-field appearance="outline">
+    <div class="main-page-layout-fi" [ngClass]="{'main-disabled': !params.category}">
+      <label class="main-label text-sm">Type</label>
+      <mat-form-field>
         <mat-select [(ngModel)]="params.type" (ngModelChange)="onChangeFilter()" placeholder="Select Type">
           <ng-container *ngFor="let type of typesForSelect">
             <mat-option [value]="type.code">{{type.label}}</mat-option>
@@ -45,11 +45,15 @@
       </mat-form-field>
     </div>
   </ng-container>
+  <!-- #endregion filter -->
+
+  <!-- #region filter right -->
   <ng-container filter-right>
     <button mat-icon-button (click)="onClickAddProduct()" matTooltip="Add Product" matTooltipPosition="above">
       <mat-icon aria-hidden="false" aria-label="Add Circle" fontIcon="add_circle"></mat-icon>
     </button>
   </ng-container>
+  <!-- #endregion filter right -->
 
   <!-- #region table -->
   <ng-container table>
@@ -107,18 +111,14 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   </ng-container>
-  <!-- #endregion -->
+  <!-- #endregion table -->
 
   <!-- #region footer -->
-  <!-- <ng-container pagination>
-    <mat-paginator [length]="params.totalElements" [pageSize]="params.pageSize" [pageIndex]="params.pageNumber"
-      [pageSizeOptions]="pageSizeOption" aria-label="Select page" (page)="onChangePagination($event)"></mat-paginator>
-  </ng-container> -->
   <ng-container button-right-ft>
     <button [ngClass]="{'main-disabled': disable.delete()}" class="main-btn-war" mat-flat-button
       (click)="onClickDeleteProduct()">
       Delete
     </button>
   </ng-container>
-  <!-- #endregion -->
+  <!-- #endregion footer -->
 </app-table-layout>

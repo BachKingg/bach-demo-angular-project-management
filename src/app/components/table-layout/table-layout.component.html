@@ -1,46 +1,51 @@
-<section class="main-tl">
+<section class="main-table-layout">
   <!-- region table filter -->
-  <section class="main-tl-ft" [ngClass]="{'main-disabled': loading()}">
-    <section class="main-tl-ftl">
+  <section class="main-table-layout-ft" [ngClass]="{'main-disabled': loading()}">
+    <section class="main-table-layout-ftl">
       <ng-content select="[filter]"></ng-content>
     </section>
-    <section class="main-tl-ftr">
+    <section class="main-table-layout-ftr">
       <ng-container *ngIf="tableSetting?.showSearch">
-        <button mat-icon-button class="favorite-icon" aria-label="Example icon-button with heart icon" (click)="onClickSearch()">
-          <mat-icon aria-hidden="false" matTooltip="Search" matTooltipPosition="above" aria-label="Search" fontIcon="search"></mat-icon>
+        <button mat-icon-button class="favorite-icon" aria-label="Example icon-button with heart icon"
+          (click)="onClickSearch()">
+          <mat-icon aria-hidden="false" matTooltip="Search" matTooltipPosition="above" aria-label="Search"
+            fontIcon="search"></mat-icon>
         </button>
       </ng-container>
       <ng-container *ngIf="tableSetting?.showDefaultBtn">
-        <button mat-icon-button class="favorite-icon" aria-label="Example icon-button with heart icon" (click)="onClickReset()">
-          <mat-icon aria-hidden="false" matTooltip="Reset" matTooltipPosition="above" aria-label="Reset" fontIcon="search_off"></mat-icon>
+        <button mat-icon-button class="favorite-icon" aria-label="Example icon-button with heart icon"
+          (click)="onClickReset()">
+          <mat-icon aria-hidden="false" matTooltip="Reset" matTooltipPosition="above" aria-label="Reset"
+            fontIcon="search_off"></mat-icon>
         </button>
-        <button mat-icon-button class="favorite-icon" aria-label="Example icon-button with heart icon" (click)="onClickRefresh()">
-          <mat-icon aria-hidden="false" matTooltip="Refresh" matTooltipPosition="above" aria-label="Refresh" fontIcon="refresh"></mat-icon>
+        <button mat-icon-button class="favorite-icon" aria-label="Example icon-button with heart icon"
+          (click)="onClickRefresh()">
+          <mat-icon aria-hidden="false" matTooltip="Refresh" matTooltipPosition="above" aria-label="Refresh"
+            fontIcon="refresh"></mat-icon>
         </button>
       </ng-container>
       <ng-content select="[filter-right]"></ng-content>
     </section>
   </section>
   <!-- region table -->
-  <section class="main-tl-tb" [style]="'overflow: ' + tbStyleLoading() + ';'">
+  <section class="main-table-layout-tb" [style]="'overflow: ' + tbStyleLoading() + ';'">
     <ng-content select="[table]"></ng-content>
     <ng-container *ngIf="loading()" [ngTemplateOutlet]="loadingTemp"></ng-container>
   </section>
   <!-- region bottom table -->
-   <section class="main-tl-fo">
-    <div class="main-tl-pag">
+  <section class="main-table-layout-fo">
+    <div class="main-table-layout-pag">
       <ng-content select="[pagination]"></ng-content>
     </div>
-    <div class="main-tl-brfo">
+    <div class="main-table-layout-brfo">
       <ng-content select="[button-right-ft]"></ng-content>
     </div>
   </section>
 </section>
 
 <ng-template #loadingTemp>
-  <div class="main-tl-ld">
-    <div class="main-tl-bgld">
-    </div>
-    <mat-progress-bar mode="query"></mat-progress-bar>
+  <div class="main-table-layout-ld">
+    <div class="main-table-layout-bgld"></div>
+    <mat-spinner></mat-spinner>
   </div>
 </ng-template>

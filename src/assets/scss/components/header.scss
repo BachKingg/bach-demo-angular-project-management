@@ -1,3 +1,3 @@
-&-hd {
-  @apply bg-[var(--white-color)] h-[var(--header-height)] flex
+&-header {
+  @apply bg-[var(--white-color)] h-[var(--header-height)] flex border-b-1 border-indigo-500 shadow-lg shadow-indigo-500/50;
 }

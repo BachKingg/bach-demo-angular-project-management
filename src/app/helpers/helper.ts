@@ -18,7 +18,6 @@ export class Helpers {
     return str;
   }
 
-  // some thing else ...
   /***
    * Need input params, return, description on method
    */
@@ -52,6 +51,7 @@ export class Helpers {
       return "";
     }
   }
+
   public static convertParamsToObject = (_string: string) => {
     // var search = location.search.substring(1);
     if (_string && _string.length > 0 && _string !== '/') {
@@ -66,6 +66,7 @@ export class Helpers {
     }
     return undefined;
   }
+
   public static getParamString = () => {
     return window.location.search.replace(/\?/g, '') || '';
   }
@@ -83,7 +84,7 @@ export class Helpers {
   }
 
   /**
-   * Get current host like: https://localhost:8000/
+   * Get current host like: https://localhost:4200/
    */
   public static getCurrentHost = (): string => window.location.protocol.concat('//').concat(window.location.host)
 

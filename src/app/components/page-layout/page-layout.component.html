@@ -1,20 +1,13 @@
 <app-header></app-header>
 <!-- content -->
-<main class="main-pl">
-  <mat-drawer-container class="!bg-transparent flex rounded-[8px]">
-    <mat-drawer class="main-pl-sb" mode="over" [opened]="visibleMenu()">
-      <mat-list>
-        <mat-list-item>
-          <a href="/products">Product</a>
-        </mat-list-item>
-      </mat-list>
-    </mat-drawer>
-    <mat-drawer-content class="main-pl-ct">
+<main class="main-page-layout">
+  <mat-drawer-container class="!bg-transparent flex">
+    <mat-drawer-content class="main-page-layout-ct">
       <ng-content select="[content]"></ng-content>
     </mat-drawer-content>
   </mat-drawer-container>
 </main>
 
-<div class="main-pl-hidden">
+<div class="main-page-layout-hidden">
   <ng-content select="[hidden]"></ng-content>
 </div>

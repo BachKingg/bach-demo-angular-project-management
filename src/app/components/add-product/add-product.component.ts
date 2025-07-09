@@ -26,9 +26,8 @@ import {
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { CurrencyFormatDirective } from '@directives';
 import { FORM_DEFAULT_VALUE, PRODUCT_CATEGORY } from '@enums';
 import { IAddProduct, ICategory, IGroupTypeByCategory, IType } from '@interfaces';
 
@@ -40,7 +39,6 @@ import { IAddProduct, ICategory, IGroupTypeByCategory, IType } from '@interfaces
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    CurrencyFormatDirective,
     MatDialogTitle,
     MatDialogContent,
     MatDialogActions,
@@ -48,7 +46,7 @@ import { IAddProduct, ICategory, IGroupTypeByCategory, IType } from '@interfaces
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-    MatProgressBarModule,
+    MatProgressSpinnerModule
   ]
 })
 export class AddProductComponent implements OnInit {
@@ -147,7 +145,7 @@ export class AddProductComponent implements OnInit {
     let inputValue = value;
     let numberValue = this.formatString(inputValue);
 
-    return this.formatNumber(numberValue);;
+    return this.formatNumber(numberValue);
   }
 
   private formatNumber(value: number): string {

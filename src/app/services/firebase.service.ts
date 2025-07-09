@@ -37,6 +37,9 @@ export class FirebaseService {
 
   constructor() { }
 
+  /**
+   * Initializes Firebase App, Auth, and Firestore using the environment configuration.
+   */
   init() {
     try {
       const config = environment.firebaseConfig;
@@ -62,6 +65,9 @@ export class FirebaseService {
     }
   }
 
+  /**
+   * Initialize Firebase app
+   */
   initAuth() {
     try {
       if (!this.firebaseApp) {
@@ -80,6 +86,9 @@ export class FirebaseService {
     }
   }
 
+  /**
+ * Initializes Firestore database
+ */
   initFireStore() {
     try {
       if (!this.firebaseApp) {
@@ -91,6 +100,9 @@ export class FirebaseService {
     }
   }
 
+  /**
+   * Retrieves a list of documents from a collection. Optionally filters out soft-deleted documents.
+   */
   getCollection<T extends IBaseItemFromFirebase>(collectionName: string, isSoft: boolean = true): Observable<Array<T>> {
     return new Observable<Array<T>>((subs: Subscriber<Array<T>>) => {
       try {
@@ -131,6 +143,9 @@ export class FirebaseService {
     });
   }
 
+  /**
+   * Adds a new document to a collection and appends metadata like timestamps.
+   */
   addNewDocument<T extends IBaseItemFromFirebase>(collectionName: string, data: T): Observable<boolean> {
     return new Observable<boolean>((subs: Subscriber<boolean>) => {
       try {
@@ -165,6 +180,9 @@ export class FirebaseService {
     });
   }
 
+  /**
+   * Updates an existing document by ID and modifies the updatedAt timestamp.
+   */
   updateDocument<T extends IBaseItemFromFirebase>(collectionName: string, firebaseID: string, data: T): Observable<boolean> {
     return new Observable<boolean>((subs: Subscriber<boolean>) => {
       try {
@@ -196,10 +214,9 @@ export class FirebaseService {
     });
   }
 
-  // searchDocument<T extends IBaseItemFromFirebase>(collectionName: string, payload: Record<string, any>): Observable<Array<T>> {
-  //   return Object.keys(payload).length ? this.searchDocumentWithField<T>(collectionName, payload) : this.getCollection<T>(collectionName);
-  // }
-
+  /**
+    * Returns the total number of documents in a collection.
+    */
   countCollection(collectionName: string): Observable<number> {
     return new Observable<number>((subs: Subscriber<number>) => {
       try {
@@ -228,6 +245,9 @@ export class FirebaseService {
     });
   }
 
+  /**
+     * Searches for documents with specific fields and applies optional sorting and filtering.
+     */
   searchDocumentWithField<T extends IBaseItemFromFirebase>(collectionName: string, payload: Record<string, any>): Observable<ISearchDocumentWithField<T>> {
     return new Observable<ISearchDocumentWithField<T>>((subs: Subscriber<ISearchDocumentWithField<T>>) => {
       try {
@@ -235,19 +255,14 @@ export class FirebaseService {
           this.initFireStore();
         }
 
-        // const _startAt = payload['pageNumber'] * payload['pageSize'];
-        // const _limit = payload['pageSize'];
         const _ref = collection(this.store as any, collectionName);
         const _query = query(
           _ref,
           where('deletedAt', '==', null),
           orderBy(payload['sort'], payload['direction']),
-          // startAt(_startAt),
-          // limit(_limit),
         );
         const _userSnap = from(getDocs(_query));
         const request: Array<Observable<any>> = [_userSnap, this.countCollection(collectionName)];
-
 
         forkJoin(request).subscribe({
           next: resp => {
@@ -305,6 +320,9 @@ export class FirebaseService {
     });
   }
 
+  /**
+   * Retrieves a single document by its ID.
+   */
   searchDocumentWithID<T extends IBaseItemFromFirebase>(collectionName: string, firebaseID: string): Observable<T | null> {
     return new Observable<T | null>((subs: Subscriber<T | null>) => {
       try {
@@ -341,6 +359,9 @@ export class FirebaseService {
     });
   }
 
+  /**
+   * Soft delete document by updating deletedAt field
+   */
   deleteDocument<T extends IBaseItemFromFirebase>(collectionName: string, datas: Array<T>): Observable<boolean[]> {
     return new Observable<boolean[]>((subs: Subscriber<boolean[]>) => {
       const deletedTime = new Date();
@@ -368,6 +389,9 @@ export class FirebaseService {
     });
   }
 
+  /**
+   * Extracts only fields relevant to search from the payload by removing unfilterable fields.
+   */
   private getSearchField(payload: Record<string, any>): Record<string, any> {
     const searchField: Record<string, any> = {};
     for (const field in payload) {

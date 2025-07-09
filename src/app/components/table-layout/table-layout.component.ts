@@ -3,8 +3,8 @@ import { Component, computed, EventEmitter, Input, OnInit, Output, signal, Writa
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ITableLayout } from '@interfaces';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   standalone: true,
@@ -14,17 +14,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     CommonModule,
     MatButtonModule,
     MatIconModule,
-    MatProgressBarModule,
     MatTooltipModule,
+    MatProgressSpinnerModule
   ]
 })
 export class TableLayoutComponent implements OnInit {
   @Input() tableSetting?: ITableLayout;
   @Input() loading: WritableSignal<boolean> = signal(false);
 
-  @Output() search$ = new EventEmitter();
-  @Output() reset$ = new EventEmitter();
-  @Output() refresh$ = new EventEmitter();
+  @Output() search = new EventEmitter();
+  @Output() reset = new EventEmitter();
+  @Output() refresh = new EventEmitter();
 
   tbStyleLoading = computed(() => this.loading() ? 'hidden' : 'auto');
   constructor() { }
@@ -33,15 +33,15 @@ export class TableLayoutComponent implements OnInit {
   }
 
   onClickSearch() {
-    this.search$.emit();
+    this.search.emit();
   }
 
   onClickReset() {
-    this.reset$.emit();
+    this.reset.emit();
   }
 
   onClickRefresh() {
-    this.refresh$.emit();
+    this.refresh.emit();
   }
 
 }

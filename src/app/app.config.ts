@@ -2,10 +2,9 @@ import { ApplicationConfig, importProvidersFrom, ImportProvidersSource, provideB
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { MenuService, FirebaseService } from '@services';
+import { FirebaseService } from '@services';
 
 const _providers: Array<ImportProvidersSource> = [
-  MenuService,
   FirebaseService
 ]
 
