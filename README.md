@@ -1,4 +1,28 @@
-# BachDemoProjectManagement
+# BACH Demo Project Management
+
+A modern project management demo app built with Angular 20, Firebase, Angular Material, and Tailwind CSS.
+
+## 🧰 Tech Stack
+
+- **Angular** v20
+- **Firebase** v11
+- **Angular Material** v20
+- **Tailwind CSS** v4
+- **RxJS** v7
+- **Node.js** v20
+- **date-fns** for date utilities
+- **Karma + Jasmine** for testing
+
+## 📦 Installation
+
+```bash
+# Clone the project
+git clone https://github.com/your-username/bach-demo-project-management.git
+cd bach-demo-project-management
+
+# Install dependencies
+npm install
+
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
 
