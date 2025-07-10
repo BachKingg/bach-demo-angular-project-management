@@ -192,126 +192,10 @@ export class ProductsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void { }
   //#endregion
 
-  //#region firebase
-  getProducts() {
-    this.loading.getProducts.set(true);
-    const _payload = { ...this.params.getAPIParams, };
-
-    this.firebaseService
-      .searchDocumentWithField<IProduct>(FIRE_STORE_COLLECTION.PRODUCTS, _payload)
-      .subscribe({
-        next: ({ data, totalElements }) => {
-          this.productData = data.map((prod) => {
-            return {
-              ...prod,
-              select: false,
-            };
-          });
-          this.params.totalElements = totalElements;
-
-          this.checkProductSelected();
-          this.checkAllSelect();
-          this.checkDisableDelete();
-          this.changeUrl(false);
-        },
-        error: (error: any) => {
-          console.error('Error fetching products:', error);
-
-          this.productData = [];
-          this.params.totalElements = 0;
-          this.disable.action.set(true);
-        },
-        complete: () => {
-          this.disable.action.set(!this.productData.length);
-          this.cdr.detectChanges();
-          this.loading.getProducts.set(false);
-        }
-      });
-  }
-
-  getProductCategory(): void {
-    this.firebaseService
-      .getCollection<ICategory>(FIRE_STORE_COLLECTION.CATEGORIES, false)
-      .subscribe({
-        next: (categories) => {
-          this.categories = categories?.length ? categories : [];
-        },
-        error: (error) => {
-          console.error('Error fetching categories:', error);
-          this.categories = [];
-          this.disable.action.set(true);
-        },
-        complete: () => {
-          this.loading.getCategory.set(true);
-          this.cdr.detectChanges();
-        }
-      });
-  }
-
-  getProductType(): void {
-    this.firebaseService
-      .getCollection<IType>(FIRE_STORE_COLLECTION.TYPES, false)
-      .subscribe({
-        next: (types) => {
-          this.rawTypes = types;
-          this.types = this.cookingTypeByCategory(types);
-
-          if (this.params.category) {
-            this.onChangeCategory(this.params.category as any);
-          }
-        },
-        error: (error) => {
-          console.error('Error fetching product types:', error);
-          this.rawTypes = [];
-          this.types = [];
-          this.disable.action.set(true);
-        },
-        complete: () => {
-          this.loading.getType.set(true);
-          this.cdr.detectChanges();
-        }
-      });
-  }
-
-  createNewProduct(data: IProduct) {
-    this.loading.addProduct.set(true);
-    this.firebaseService
-      .addNewDocument(FIRE_STORE_COLLECTION.PRODUCTS, data)
-      .subscribe((resp) => {
-        if (resp) {
-          this.onCloseAddProductDialog(true);
-        }
-        this.loading.addProduct.set(false);
-      });
-  }
-
-  updateProduct(data: IProductFromFirebase) {
-    this.loading.updateProduct.set(true);
-    this.firebaseService
-      .updateDocument(FIRE_STORE_COLLECTION.PRODUCTS, data.id, data)
-      .subscribe((resp) => {
-        if (resp) {
-          this.onCloseAddProductDialog(true);
-        }
-        this.loading.updateProduct.set(false);
-      });
-  }
-
-  deleteProducts(products: Array<IProductFromFirebase>) {
-    this.firebaseService.deleteDocument(FIRE_STORE_COLLECTION.PRODUCTS, products).subscribe({
-      next: resp => {
-        this.productSelected = [];
-        this.onCloseDeleteProductDialog(true);
-      },
-      error: error => { }
-    });
-  }
-  //#endregion
-
   //#region local func
   initData() {
-    this.getProductCategory();
-    this.getProductType();
+    this.getProductCategoryList();
+    this.getProductTypeList();
   }
 
   onChangeProductName(value: string) {
@@ -367,20 +251,20 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   cookingTypeByCategory(data: Array<IType>): Array<IGroupTypeByCategory> {
-    const returnData: Array<IGroupTypeByCategory> = [];
+    const _returnData: Array<IGroupTypeByCategory> = [];
 
     data.forEach(prod => {
-      const existIndex = returnData.findIndex(retProd => retProd.category === prod.category);
+      const existIndex = _returnData.findIndex(retProd => retProd.category === prod.category);
       if (existIndex > -1) {
-        returnData[existIndex].types.push(prod);
+        _returnData[existIndex].types.push(prod);
       } else {
-        returnData.push({
+        _returnData.push({
           category: prod.category,
           types: [prod],
         })
       }
     });
-    return returnData;
+    return _returnData;
   }
 
   onClickSelectProduct(select: boolean, product: IProductFromFirebase) {
@@ -453,6 +337,122 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.params.pageNumber = pag.pageIndex;
     this.params.pageSize = pag.pageSize;
     this.changeUrl();
+  }
+  //#endregion
+
+  //#region get data from firebase
+  getProducts() {
+    this.loading.getProducts.set(true);
+    const _payload = { ...this.params.getAPIParams, };
+
+    this.firebaseService
+      .searchDocumentWithField<IProduct>(FIRE_STORE_COLLECTION.PRODUCTS, _payload)
+      .subscribe({
+        next: ({ data, totalElements }) => {
+          this.productData = data.map((prod) => {
+            return {
+              ...prod,
+              select: false,
+            };
+          });
+          this.params.totalElements = totalElements;
+
+          this.checkProductSelected();
+          this.checkAllSelect();
+          this.checkDisableDelete();
+          this.changeUrl(false);
+        },
+        error: (error: any) => {
+          console.error('Error fetching products:', error);
+
+          this.productData = [];
+          this.params.totalElements = 0;
+          this.disable.action.set(true);
+        },
+        complete: () => {
+          this.disable.action.set(!this.productData.length);
+          this.cdr.detectChanges();
+          this.loading.getProducts.set(false);
+        }
+      });
+  }
+
+  getProductCategoryList(): void {
+    this.firebaseService
+      .getCollection<ICategory>(FIRE_STORE_COLLECTION.CATEGORIES, false)
+      .subscribe({
+        next: (categories) => {
+          this.categories = categories?.length ? categories : [];
+        },
+        error: (error) => {
+          console.error('Error fetching categories:', error);
+          this.categories = [];
+          this.disable.action.set(true);
+        },
+        complete: () => {
+          this.loading.getCategory.set(true);
+          this.cdr.detectChanges();
+        }
+      });
+  }
+
+  getProductTypeList(): void {
+    this.firebaseService
+      .getCollection<IType>(FIRE_STORE_COLLECTION.TYPES, false)
+      .subscribe({
+        next: (types) => {
+          this.rawTypes = types;
+          this.types = this.cookingTypeByCategory(types);
+
+          if (this.params.category) {
+            this.onChangeCategory(this.params.category as any);
+          }
+        },
+        error: (error) => {
+          console.error('Error fetching product types:', error);
+          this.rawTypes = [];
+          this.types = [];
+          this.disable.action.set(true);
+        },
+        complete: () => {
+          this.loading.getType.set(true);
+          this.cdr.detectChanges();
+        }
+      });
+  }
+
+  createNewProduct(data: IProduct) {
+    this.loading.addProduct.set(true);
+    this.firebaseService
+      .addNewDocument(FIRE_STORE_COLLECTION.PRODUCTS, data)
+      .subscribe((resp) => {
+        if (resp) {
+          this.onCloseAddProductDialog(true);
+        }
+        this.loading.addProduct.set(false);
+      });
+  }
+
+  updateProduct(data: IProductFromFirebase) {
+    this.loading.updateProduct.set(true);
+    this.firebaseService
+      .updateDocument(FIRE_STORE_COLLECTION.PRODUCTS, data.id, data)
+      .subscribe((resp) => {
+        if (resp) {
+          this.onCloseAddProductDialog(true);
+        }
+        this.loading.updateProduct.set(false);
+      });
+  }
+
+  deleteProducts(products: Array<IProductFromFirebase>) {
+    this.firebaseService.deleteDocument(FIRE_STORE_COLLECTION.PRODUCTS, products).subscribe({
+      next: resp => {
+        this.productSelected = [];
+        this.onCloseDeleteProductDialog(true);
+      },
+      error: error => { }
+    });
   }
   //#endregion
 
